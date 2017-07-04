@@ -1,9 +1,12 @@
-package org.shipkit.internal.notes.contributors;
+package org.shipkit.internal.notes.contributors.github;
 
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
 import org.json.simple.DeserializationException;
 import org.json.simple.JsonObject;
+import org.shipkit.internal.notes.contributors.ConcurrentDispatcher;
+import org.shipkit.internal.notes.contributors.DefaultProjectContributorsSet;
+import org.shipkit.internal.notes.contributors.ProjectContributorsSet;
 import org.shipkit.internal.notes.model.ProjectContributor;
 import org.shipkit.internal.notes.util.Function;
 import org.shipkit.internal.notes.util.GitHubListFetcher;
