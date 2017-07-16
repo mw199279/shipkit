@@ -24,11 +24,13 @@ import static org.shipkit.internal.gradle.util.Specs.withName;
  *     <li>For all submodules that have {@link JavaPublishPlugin} plugin, add dependency on task that fetches all contributors.</li>
  * </ul>
  */
-public class PomContributorsPlugin implements Plugin<Project> {
+public abstract class PomContributorsPlugin implements Plugin<Project> {
+
+    abstract void applyContributorsPlugin(Project project);
 
     @Override
     public void apply(final Project project) {
-        project.getPlugins().apply(ContributorsPlugin.class);
+        applyContributorsPlugin(project);
 
         project.allprojects(new Action<Project>() {
             public void execute(final Project subproject) {

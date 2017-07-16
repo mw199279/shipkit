@@ -8,8 +8,7 @@ import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.TaskAction;
 import org.shipkit.gradle.ReleaseConfiguration;
 import org.shipkit.internal.notes.contributors.AllContributorsSerializer;
-import org.shipkit.internal.notes.contributors.github.Contributors;
-import org.shipkit.internal.notes.contributors.github.GitHubContributorsProvider;
+import org.shipkit.internal.notes.contributors.ContributorsProvider;
 import org.shipkit.internal.notes.contributors.ProjectContributorsSet;
 import org.shipkit.internal.notes.util.IOUtil;
 
@@ -21,7 +20,7 @@ import java.io.File;
  * It use GitHub repos/contributors endpoint: https://developer.github.com/v3/repos/#list-contributors
  * "Contributors data is cached for performance reasons. This endpoint may return information that is a few hours old."
  */
-public class AllContributorsFetcherTask extends DefaultTask {
+public abstract class AllContributorsFetcherTask extends DefaultTask {
 
     private static final Logger LOG = Logging.getLogger(AllContributorsFetcherTask.class);
 
@@ -87,11 +86,13 @@ public class AllContributorsFetcherTask extends DefaultTask {
         this.outputFile = outputFile;
     }
 
+    protected abstract ContributorsProvider getContributorsProvider();
+
     @TaskAction
     public void fetchContributors() {
         LOG.lifecycle("  Fetching all contributors for project");
 
-        GitHubContributorsProvider contributorsProvider = Contributors.getGitHubContributorsProvider(apiUrl, repository, readOnlyAuthToken);
+        ContributorsProvider contributorsProvider = getContributorsProvider();
         ProjectContributorsSet contributors = contributorsProvider.getAllContributorsForProject();
 
         AllContributorsSerializer serializer = new AllContributorsSerializer();
